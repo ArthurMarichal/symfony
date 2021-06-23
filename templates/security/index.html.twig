@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Duck index{% endblock %}
+
+{% block body %}
+    <h1>Duck index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Duckname</th>
+                <th>Email</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ducks in duck %}
+            <tr>
+                <td>{{ ducks.duckname }}</td>
+                <td>{{ ducks.email}}</td>
+                <td>{{ ducks.firstname}}</td>
+                <td>{{ ducks.lastname}}</td>
+                <td>
+                    <a href="{{ path('duck_show', {'id': ducks.id}) }}">show</a>
+                    <a href="{{ path('duck_edit', {'id': ducks.id}) }}">edit</a>
+                    <a href="{{ path('duck_delete', {'id': ducks.id}) }}">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<button type="submit" name="logout">Log out</button>
+{% endblock %}
