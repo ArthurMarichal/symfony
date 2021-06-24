@@ -31,6 +31,7 @@ class QuackController extends AbstractController
     {
 
         $quack = new Quack();
+        $quack->setAuthor($this->getUser());
         $form = $this->createForm(Quack1Type::class, $quack);
         $form->handleRequest($request);
 
@@ -39,7 +40,7 @@ class QuackController extends AbstractController
             $entityManager->persist($quack);
             $entityManager->flush();
 
-            return $this->redirectToRoute('quack_index');
+            return $this->redirectToRoute('duck_index');
         }
 
         return $this->render('quack/new.html.twig', [

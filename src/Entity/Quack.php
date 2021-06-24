@@ -27,6 +27,19 @@ class Quack
      */
     private $created_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Duck::class, inversedBy="quacks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $picture;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,4 +68,29 @@ class Quack
 
         return $this;
     }
+
+    public function getAuthor(): ?Duck
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Duck $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
 }

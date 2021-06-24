@@ -16,6 +16,10 @@
                 <td>{{ quack.Content }}</td>
             </tr>
             <tr>
+                <th>Pics</th>
+                <td><img src="{{ quack.picture }}" alt="quack pic" width="250" height="250"></td>
+            </tr>
+            <tr>
                 <th>Created_at</th>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>

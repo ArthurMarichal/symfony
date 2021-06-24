@@ -8,24 +8,29 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Pics</th>
                 <th>Id</th>
                 <th>Content</th>
+                <th>Author</th>
                 <th>Created_at</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for quack in quacks %}
+        {% for quacks in quack %}
             <tr>
-                <td>{{ quack.id }}</td>
-                <td>{{ quack.Content }}</td>
-                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td><img src="{{ quacks.picture }}" alt="profil pic" width="250" height="250"></td>
+                <td>{{ quacks.id }}</td>
+                <td>{{ quacks.Content }}</td>
+                <td>{{ quacks.author.duckname }}</td>
+                <td>{{ quacks.createdAt ? quacks.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
-                    <a href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
-                    <a href="{{ path('quack_delete', {'id': quack.id}) }}">delete</a>
+                    <a href="{{ path('quack_show', {'id': quacks.id}) }}">show</a>
+                    <a href="{{ path('quack_edit', {'id': quacks.id}) }}">edit</a>
+                    <a href="{{ path('quack_delete', {'id': quacks.id}) }}">delete</a>
                 </td>
             </tr>
+
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>

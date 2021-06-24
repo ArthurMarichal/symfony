@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Duck;
+use App\Entity\Quack;
 use App\Form\DuckType;
 use App\Form\RegistrationFormType;
 use App\Repository\DuckRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Asset\Package;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,12 +76,14 @@ class DuckController extends AbstractController
         ]);
     }
     /**
-     * @Route("/duck/show/{id}", name="duck_show", methods={"GET"})
+     * @Route("/duck/show/{duckname}", name="duck_show", methods={"GET"})
      */
     public function show(Duck $duck): Response
     {
+        $quackRepository = $this->getDoctrine()->getRepository(Quack::class);
         return $this->render('security/show.html.twig', [
             'duck' => $duck,
+            'quack' => $quackRepository->findAll()
         ]);
     }
 

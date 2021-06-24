@@ -3,15 +3,14 @@
 {% block title %}Duck index{% endblock %}
 
 {% block body %}
-    <h1>Duck index</h1>
-
+    <h1>Hello {{ app.user.duckname}}</h1>
+     <button><a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}">Mon Duck !</a></button>
+    <h3>Here is all the Ducks :</h3>
     <table class="table">
         <thead>
             <tr>
                 <th>Duckname</th>
-                <th>Email</th>
                 <th>Firstname</th>
-                <th>Lastname</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,13 +18,11 @@
         {% for ducks in duck %}
             <tr>
                 <td>{{ ducks.duckname }}</td>
-                <td>{{ ducks.email}}</td>
                 <td>{{ ducks.firstname}}</td>
-                <td>{{ ducks.lastname}}</td>
                 <td>
-                    <a href="{{ path('duck_show', {'id': ducks.id}) }}">show</a>
-                    <a href="{{ path('duck_edit', {'id': ducks.id}) }}">edit</a>
-                    <a href="{{ path('duck_delete', {'id': ducks.id}) }}">delete</a>
+                    <a href="{{ path('duck_show', {'duckname': ducks.id}) }}">show</a>
+
+{#                    <a href="{{ path('duck_delete', {'id': ducks.id}) }}">delete</a>#}
                 </td>
             </tr>
         {% else %}
@@ -35,6 +32,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-<button type="submit" name="logout">Log out</button>
+<button><a href="{{ path('quack_new') }}">New Quack !</a></button>
+    <button type="submit" name="logout"><a href="{{ path('app_logout') }}">Log out</a></button>
 {% endblock %}
