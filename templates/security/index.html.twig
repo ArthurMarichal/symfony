@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Hello {{ app.user.duckname}}</h1>
+    <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250">
      <button><a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}">Mon Duck !</a></button>
     <h3>Here is all the Ducks :</h3>
     <table class="table">
@@ -15,23 +16,28 @@
             </tr>
         </thead>
         <tbody>
-        {% for ducks in duck %}
+        {% for duck in ducks %}
             <tr>
-                <td>{{ ducks.duckname }}</td>
-                <td>{{ ducks.firstname}}</td>
+                <td>{{ duck.duckname }}</td>
+                <td>{{ duck.firstname}}</td>
                 <td>
-                    <a href="{{ path('duck_show', {'duckname': ducks.id}) }}">show</a>
+                    <a href="{{ path('duck_show', {'duckname': duck.duckname}) }}">show</a>
 
 {#                    <a href="{{ path('duck_delete', {'id': ducks.id}) }}">delete</a>#}
                 </td>
             </tr>
+
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
+        <tr>
+            <th>{{ include('quack/index.html.twig') }}</th>
+        </tr>
         </tbody>
     </table>
+
 <button><a href="{{ path('quack_new') }}">New Quack !</a></button>
     <button type="submit" name="logout"><a href="{{ path('app_logout') }}">Log out</a></button>
 {% endblock %}

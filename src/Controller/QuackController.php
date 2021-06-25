@@ -5,14 +5,19 @@ namespace App\Controller;
 use App\Entity\Quack;
 use App\Form\Quack1Type;
 use App\Repository\QuackRepository;
+use Monolog\DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 class QuackController extends AbstractController
 {
+  //  const EDIT = 'EDIT';
+    //const DELETE = 'DELETE';
     /**
      * @Route("/quack", name="quack_index", methods={"GET"})
      */
@@ -32,6 +37,7 @@ class QuackController extends AbstractController
 
         $quack = new Quack();
         $quack->setAuthor($this->getUser());
+        $quack->setCreatedAt(date_create());
         $form = $this->createForm(Quack1Type::class, $quack);
         $form->handleRequest($request);
 
@@ -67,6 +73,10 @@ class QuackController extends AbstractController
         $form = $this->createForm(Quack1Type::class, $quack);
         $form->handleRequest($request);
 
+        $this->denyAccessUnlessGranted('EDIT', $quack);
+        if (!$this->isGranted('EDIT', $form)) {
+           // return $this->render('/quack');
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -80,12 +90,13 @@ class QuackController extends AbstractController
     }
 
     /**
-     * @Route("/quack/delete/{id}", name="quack_delete", methods={"GET"})
+     * @Route("/quack/delete/{id}", name="quack_delete", methods={"POST"})
      */
     public function delete(Quack $quack): Response
     {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $this->denyAccessUnlessGranted('DELETE', $quack);
             $entityManager->remove($quack);
             $entityManager->flush();
 

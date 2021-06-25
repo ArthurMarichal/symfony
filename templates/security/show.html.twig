@@ -11,10 +11,6 @@
             <td><img src="{{ duck.picture }}" alt="profil pic" width="250" height="250"></td>
         </tr>
             <tr>
-                <th>Id</th>
-                <td>{{ duck.id }}</td>
-            </tr>
-            <tr>
                 <th>email</th>
                 <td>{{ duck.email }}</td>
             </tr>
@@ -31,21 +27,16 @@
                 <td>{{ duck.duckname }}</td>
             </tr>
             <tr>
-                <th>password</th>
-                <td>{{ duck.password }}</td>
-            </tr>
-            <tr>
-                <th>Quack :</th>
-                <th>{{ include('quack/index.html.twig') }}</th>
+                <th>There is all your Quacks :</th>
+                <th>{{ include('quack/index.html.twig')}}</th>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('duck_index') }}">Back to list</a><br>
-    <a href="{{ path('duck_edit', {'id': duck.id}) }}">Edit</a><br>
+    <a href="{{ path('duck_index') }}">Back to list</a>
+
+    <a href="{{ path('duck_edit', {'id': duck.id}) }}">Edit</a>
     <a href="{{ path('quack_new') }}"> Write a new Quack</a>
-{#    <a href="{{ path('quack_edit', {'id': quack.id}) }}">Edit a Quack</a>#}
-
-
     {{ include('security/_delete_form.html.twig') }}
+
 {% endblock %}

@@ -11,6 +11,23 @@
             .btn-primary button{
                 background-color: blue;
             }
+            h1 {
+                color: darkorange;
+                font-style: italic;
+            }
+            h3{
+                color: yellow;
+            }
+            button{
+                background-color: goldenrod;
+            }
+            tbody{
+                font-size: large;
+                color: gold;
+            }
+            body{
+                background-color: yellowgreen;
+            }
            </style>
             {#{{ encore_entry_link_tags('app') }}#}
         {% endblock %}
@@ -20,6 +37,7 @@
         {% endblock %}
     </head>
     <body>
+    <button><a href="{{ path('app_login') }}">Come and log in Duck :)</a></button>
         {% block body %}{% endblock %}
     </body>
 </html>

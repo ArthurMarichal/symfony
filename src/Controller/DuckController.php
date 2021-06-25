@@ -71,8 +71,10 @@ class DuckController extends AbstractController
     public function index(): Response
     {
         $duckRepository = $this->getDoctrine()->getRepository(Duck::class);
+        $quackRepository = $this->getDoctrine()->getRepository(Quack::class);
         return $this->render('security/index.html.twig', [
-            'duck' => $duckRepository->findAll(),
+            'ducks' => $duckRepository->findAll(),
+            'quacks'=> $quackRepository->findAll()
         ]);
     }
     /**
@@ -80,10 +82,10 @@ class DuckController extends AbstractController
      */
     public function show(Duck $duck): Response
     {
-        $quackRepository = $this->getDoctrine()->getRepository(Quack::class);
+
         return $this->render('security/show.html.twig', [
             'duck' => $duck,
-            'quack' => $quackRepository->findAll()
+            'quacks' => $duck->getQuacks()
         ]);
     }
 
@@ -114,7 +116,7 @@ class DuckController extends AbstractController
     }
 
     /**
-     * @Route("/duck/delete/{id}", name="duck_delete", methods={"GET"})
+     * @Route("/duck/delete/{id}", name="duck_delete", methods={"POST"})
      */
     public function delete(Duck $duck): Response
     {
