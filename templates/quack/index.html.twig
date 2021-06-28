@@ -6,7 +6,7 @@
 
     <h1>The Quacks :</h1>
 
-    <table class="table">
+    <table class="table table-warning">
         <thead>
             <tr>
                 <th>Pics</th>
@@ -29,11 +29,10 @@
                     <a href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
                     {% if app.user.duckname == quack.author.duckname %}
                     <a href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
-                    <a href="{{ path('quack_delete', {'id': quack.id}) }}">delete</a>
+                        <form action="{{ path('quack_delete', {'id': quack.id}) }}" method="post"><button>Delete</button></form>
                     {% endif %}
                 </td>
             </tr>
-
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>

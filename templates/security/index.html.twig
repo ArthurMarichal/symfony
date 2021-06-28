@@ -3,11 +3,16 @@
 {% block title %}Duck index{% endblock %}
 
 {% block body %}
+    {% if app.user.duckname != null %}
     <h1>Hello {{ app.user.duckname}}</h1>
     <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250">
      <button><a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}">Mon Duck !</a></button>
+    {% else %}
+    <h1>Welcome new Duck !</h1>
+    You can read the Quacks below.
+    {% endif %}
     <h3>Here is all the Ducks :</h3>
-    <table class="table">
+    <table class="table text-light">
         <thead>
             <tr>
                 <th>Duckname</th>

@@ -103,4 +103,32 @@ class QuackController extends AbstractController
 
         return $this->redirectToRoute('quack_index');
     }
+
+    /**
+     * @Route("/comment/{id}", name="quack_comment", methods={"GET","POST"})     *
+     */
+    public function comment(Request $request, Quack $quack): Response
+    {
+        $comment = new Quack();
+        $comment->setParent($quack);
+        $comment->setAuthor($this->getUser());
+        $comment->setCreatedAt(date_create());
+        $form = $this->createForm(Quack1Type::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('quack_show', ['id' => $quack->getId()]);
+
+        }
+
+        return $this->render('quack/new.html.twig', [
+            'quack' => $quack,
+            'form' => $form->createView(),
+        ]);
+    }
 }
