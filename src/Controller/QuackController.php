@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Quack;
 use App\Form\Quack1Type;
 use App\Repository\QuackRepository;
+use App\Security\Voter\QuackVoter;
 use Monolog\DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,16 +17,14 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class QuackController extends AbstractController
 {
-  //  const EDIT = 'EDIT';
-    //const DELETE = 'DELETE';
     /**
      * @Route("/quack", name="quack_index", methods={"GET"})
      */
     public function index(): Response
     {
         $quackRepository = $this->getDoctrine()->getRepository(Quack::class);
-        return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
+        return $this->render('quack/quackindex.html.twig', [
+            'quacks' => $quackRepository->findBy(['parent' => null]),
         ]);
     }
 
@@ -49,7 +48,7 @@ class QuackController extends AbstractController
             return $this->redirectToRoute('duck_index');
         }
 
-        return $this->render('quack/new.html.twig', [
+        return $this->render('quack/quacknew.html.twig', [
             'quack' => $quack,
             'form' => $form->createView(),
         ]);
@@ -60,7 +59,7 @@ class QuackController extends AbstractController
      */
     public function show(Quack $quack): Response
     {
-        return $this->render('quack/show.html.twig', [
+        return $this->render('quack/quackshow.html.twig', [
             'quack' => $quack,
         ]);
     }
@@ -73,8 +72,8 @@ class QuackController extends AbstractController
         $form = $this->createForm(Quack1Type::class, $quack);
         $form->handleRequest($request);
 
-        $this->denyAccessUnlessGranted('EDIT', $quack);
-        if (!$this->isGranted('EDIT', $form)) {
+        $this->denyAccessUnlessGranted(QuackVoter::EDIT, $quack);
+        if (!$this->isGranted(QuackVoter::EDIT, $form)) {
            // return $this->render('/quack');
         }
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,7 +82,7 @@ class QuackController extends AbstractController
             return $this->redirectToRoute('quack_index');
         }
 
-        return $this->render('quack/edit.html.twig', [
+        return $this->render('quack/quackedit.html.twig', [
             'quack' => $quack,
             'form' => $form->createView(),
         ]);
@@ -96,7 +95,7 @@ class QuackController extends AbstractController
     {
 
             $entityManager = $this->getDoctrine()->getManager();
-            $this->denyAccessUnlessGranted('DELETE', $quack);
+            $this->denyAccessUnlessGranted(QuackVoter::DELETE, $quack);
             $entityManager->remove($quack);
             $entityManager->flush();
 
@@ -126,9 +125,21 @@ class QuackController extends AbstractController
 
         }
 
-        return $this->render('quack/new.html.twig', [
+        return $this->render('quack/quacknew.html.twig', [
             'quack' => $quack,
             'form' => $form->createView(),
         ]);
+    }
+    /**
+     * @Route("/comment/delete/{id}", name="comment_delete", methods={"POST"})
+     */
+    public function delComment(Quack $quack) : Response
+    {   $quackParent = $quack->getParent();
+        $entityManager = $this->getDoctrine()->getManager();
+        $this->denyAccessUnlessGranted(QuackVoter::DELETE, $quack);
+        $entityManager->remove($quack);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('quack_show', ['id' => $quackParent->getId()]);
     }
 }

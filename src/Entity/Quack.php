@@ -22,7 +22,7 @@ class Quack
     /**
      * @ORM\Column(type="text")
      */
-    private $Content;
+    private $content;
 
     /**
      * @ORM\Column(type="datetime")
@@ -51,7 +51,7 @@ class Quack
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quack::class, mappedBy="parent")
+     * @ORM\OneToMany(targetEntity=Quack::class, mappedBy="parent", orphanRemoval=true)
      */
     private $comments;
 
@@ -67,12 +67,12 @@ class Quack
 
     public function getContent(): ?string
     {
-        return $this->Content;
+        return $this->content;
     }
 
-    public function setContent(string $Content): self
+    public function setContent(string $content): self
     {
-        $this->Content = $Content;
+        $this->content = $content;
 
         return $this;
     }

@@ -3,16 +3,15 @@
 {% block title %}Duck index{% endblock %}
 
 {% block body %}
-    {% if app.user.duckname != null %}
+    {% if app.token%}
     <h1>Hello {{ app.user.duckname}}</h1>
-    <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250">
-     <button><a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}">Mon Duck !</a></button>
+    <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250"><br>
+     <a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}"><button class="btn btn-warning">Mon Duck !</button></a>
     {% else %}
     <h1>Welcome new Duck !</h1>
-    You can read the Quacks below.
     {% endif %}
     <h3>Here is all the Ducks :</h3>
-    <table class="table text-light">
+    <table class="table duck-text">
         <thead>
             <tr>
                 <th>Duckname</th>
@@ -27,8 +26,6 @@
                 <td>{{ duck.firstname}}</td>
                 <td>
                     <a href="{{ path('duck_show', {'duckname': duck.duckname}) }}">show</a>
-
-{#                    <a href="{{ path('duck_delete', {'id': ducks.id}) }}">delete</a>#}
                 </td>
             </tr>
 
@@ -38,11 +35,8 @@
             </tr>
         {% endfor %}
         <tr>
-            <th>{{ include('quack/index.html.twig') }}</th>
+            <th>{{ include('quack/quack_duck_index.html.twig') }}</th>
         </tr>
         </tbody>
     </table>
-
-<button><a href="{{ path('quack_new') }}">New Quack !</a></button>
-    <button type="submit" name="logout"><a href="{{ path('app_logout') }}">Log out</a></button>
 {% endblock %}

@@ -9,10 +9,19 @@
         {% block stylesheets %}
             <style>
                 body{
-                   background-image: url("https://medias.spotern.com/spots/w640/173/173088-1544893052.jpg");
+                    background-image: url("https://medias.spotern.com/spots/w640/173/173088-1544893052.jpg");
+                    background-size: cover;
                 }
-                h1{
-                    color: yellow;
+                h1, h3{
+                    color: #ffc107;
+                }
+                .duck-text{
+                    color: #ffc107;
+                }
+                .flex{
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: row;
                 }
             </style>
             {#{{ encore_entry_link_tags('app') }}#}
@@ -23,7 +32,9 @@
         {% endblock %}
     </head>
     <body>
-    <a href="{{ path('app_login') }}"><button class="btn btn-primary">Come and log in Duck :)</button></a>
+    <a href="{{ path('app_login') }}"><button class="btn btn-warning">Sign in</button></a>
+    <a href="{{ path('app_logout') }}"><button type="submit" name="logout" class="btn-warning btn">Log out</button></a>
+    <a href="{{ path('app_register') }}"><button class="btn btn-warning">Join us !</button></a>
         {% block body %}{% endblock %}
     </body>
 </html>

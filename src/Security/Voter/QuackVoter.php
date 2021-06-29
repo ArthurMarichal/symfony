@@ -16,7 +16,7 @@ class QuackVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['EDIT', 'DELETE'])
+        return in_array($attribute, [self::EDIT, self::DELETE])
             && $subject instanceof \App\Entity\Quack;
     }
 
@@ -34,22 +34,10 @@ class QuackVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
                 return $quack->getAuthor()->getId() == $user->getId();
-                break;
             case self::DELETE:
                 return $quack->getAuthor()->getId() == $user->getId();
-                break;
         }
 
         return false;
     }
-private function canView(Post $post, User $user): bool
-{
-    // if they can edit, they can view
-    if ($this->canEdit($post, $user)) {
-        return true;
-    }
-
-    // the Post object could have, for example, a method `isPrivate()`
-    return !$post->isPrivate();
-}
 }

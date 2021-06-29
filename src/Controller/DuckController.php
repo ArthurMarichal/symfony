@@ -74,7 +74,7 @@ class DuckController extends AbstractController
         $quackRepository = $this->getDoctrine()->getRepository(Quack::class);
         return $this->render('security/index.html.twig', [
             'ducks' => $duckRepository->findAll(),
-            'quacks'=> $quackRepository->findAll()
+            'quacks'=> $quackRepository->findBy(['parent' => null])
         ]);
     }
     /**

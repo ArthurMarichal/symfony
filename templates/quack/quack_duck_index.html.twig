@@ -1,0 +1,45 @@
+{% block body %}
+    <h1>The Quacks :</h1>
+
+    <table class="table duck-text">
+        <thead>
+        <tr>
+            <th>Pics</th>
+            <th>Content</th>
+            <th>Author</th>
+            <th>Tags</th>
+            <th>Created_at</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for quack in quacks %}
+            <tr>
+                <td><img src="{{ quack.picture }}" alt="Image not available" width="250" height="250"></td>
+                <td>{{ quack.content }}</td>
+                <td>{{ quack.author.duckname }}</td>
+                <td>{{ quack.tags }}</td>
+                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('quack_show', {'id': quack.id}) }}"><button class="btn btn-warning">show</button></a>
+                    {% if app.token %}
+                        {% if app.user.duckname == quack.author.duckname %}
+                            <a href="{{ path('quack_edit', {'id': quack.id}) }}"><button class="btn btn-warning">edit</button></a>
+                            <form action="{{ path('quack_delete', {'id': quack.id}) }}" method="post">
+                                <button class="btn btn-warning">Delete</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('quack_new') }}"><button class="btn btn-warning">Create new</button></a>
+{% endblock %}

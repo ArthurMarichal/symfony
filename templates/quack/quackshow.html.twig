@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Quack</h1>
 
-    <table class="table table-warning">
+    <table class="table duck-text">
         <tbody>
         <tr>
             <th>Pics</th>
@@ -22,7 +22,7 @@
         </tbody>
     </table>
     {% if quack.comments is not empty %}
-        <table class="table table-warning">
+        <table class="table duck-text">
             <thead>
             <tr>
                 <th>De :</th>
@@ -32,20 +32,32 @@
             </thead>
             <tbody>
             {% for comment in quack.comments %}
-            <tr>
-                <td>{{ comment.author.duckname }}</td>
-                <td>{{ comment.content }}</td>
-                <td>{{ comment.createdAt|date }}</td>
-            </tr>
+                <tr>
+                    <td>{{ comment.author.duckname }}</td>
+                    <td>{{ comment.content }}</td>
+                    <td>{{ comment.createdAt|date }}</td>
+                    {% if app.token %}
+                        {% if (app.user.duckname == quack.author.duckname) or (app.user.duckname == comment.author.duckname) %}
+                            <td>{{ include('quack/_delete_comment_form.html.twig') }}</td>
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
             {% endfor %}
             </tbody>
 
         </table>
     {% endif %}
 
-    <a href="{{ path('quack_comment', {'id': quack.id}) }}"><button class="btn-primary btn">Add some comment</button></a>
-    <a href="{{ path('quack_index') }}"><button class="btn-primary btn">back to list</button></a>
-    <a href="{{ path('quack_edit', {'id': quack.id}) }}"><button class="btn-primary btn">edit</button></a>
+    <a href="{{ path('quack_comment', {'id': quack.id}) }}">
+        <button class="btn-primary btn">Add some comment</button>
+    </a>
+    <a href="{{ path('quack_index') }}">
+        <button class="btn-primary btn">back to list</button>
+    </a>
+    <a href="{{ path('quack_edit', {'id': quack.id}) }}">
+        <button class="btn-primary btn">edit</button>
+    </a>
 
     {{ include('quack/_delete_form.html.twig') }}
 {% endblock %}
