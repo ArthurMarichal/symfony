@@ -3,7 +3,7 @@
 {% block title %}Duck index{% endblock %}
 
 {% block body %}
-    {% if app.token%}
+    {% if is_granted('ROLE_USER') %}
     <h1>Hello {{ app.user.duckname}}</h1>
     <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250"><br>
      <a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}"><button class="btn btn-warning">Mon Duck !</button></a>
@@ -25,7 +25,7 @@
                 <td>{{ duck.duckname }}</td>
                 <td>{{ duck.firstname}}</td>
                 <td>
-                    <a href="{{ path('duck_show', {'duckname': duck.duckname}) }}">show</a>
+                    <a href="{{ path('duck_show', {'duckname': duck.duckname}) }}"><button class="btn btn-warning">show</button></a>
                 </td>
             </tr>
 

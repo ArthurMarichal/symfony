@@ -28,7 +28,7 @@
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('quack_show', {'id': quack.id}) }}"><button class="btn btn-warning">show</button></a>
-                    {% if app.token %}
+                    {% if is_granted('ROLE_USER') %}
                         {% if app.user.duckname == quack.author.duckname %}
                             <a href="{{ path('quack_edit', {'id': quack.id}) }}"><button class="btn btn-warning">edit</button></a>
                             <form action="{{ path('quack_delete', {'id': quack.id}) }}" method="post">

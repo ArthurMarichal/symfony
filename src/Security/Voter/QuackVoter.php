@@ -10,32 +10,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class QuackVoter extends Voter
 {
-    const EDIT = 'EDIT';
-    const  DELETE = "DELETE";
+    const EDIT = 'CAN_EDIT';
+    const DELETE = 'CAN_DELETE';
     protected function supports(string $attribute, $subject): bool
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::DELETE])
-            && $subject instanceof \App\Entity\Quack;
-    }
-
-    protected function voteOnAttribute(string $attribute, $quack, TokenInterface $token): bool
-    {
-        $user = $token->getUser();
-        // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
-            return false;
+        if(self::EDIT == $attribute || self::DELETE == $attribute){
+            return true;
         }
 
-       if (null == $quack->getAuthor()){
-           return false;
-       }
-        switch ($attribute) {
-            case self::EDIT:
-                return $quack->getAuthor()->getId() == $user->getId();
-            case self::DELETE:
-                return $quack->getAuthor()->getId() == $user->getId();
+    return false;
+    }
+
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    {
+        //Check si le sujet est une instance de Quack.
+        //Puis check si l'auteur du sujet est l'utilisateur connecté($token->getUser())
+        if ($subject instanceof Quack){
+            if ($subject->getAuthor() === $token->getUser()){
+                return true;
+            }
+            if ($subject->getParent()){
+                $parentVote = $this->voteOnAttribute($attribute,$subject->getParent(),$token);
+                if ($parentVote){
+                    return true;
+                }
+            }
         }
 
         return false;

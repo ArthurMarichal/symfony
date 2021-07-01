@@ -21,7 +21,17 @@
         </tr>
         </tbody>
     </table>
+    {% if is_granted('ROLE_USER') %}
+        {% if is_granted('CAN_DELETE', quack) %}
+            <td>{{ include('quack/_delete_form.html.twig') }}</td>
+            <td><a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-warning">
+                    edit
+                </a></td>
+
+        {% endif %}
+    {% endif %}
     {% if quack.comments is not empty %}
+        <h3>Section commentaires :</h3>
         <table class="table duck-text">
             <thead>
             <tr>
@@ -36,9 +46,12 @@
                     <td>{{ comment.author.duckname }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.createdAt|date }}</td>
-                    {% if app.token %}
-                        {% if (app.user.duckname == quack.author.duckname) or (app.user.duckname == comment.author.duckname) %}
+                    {% if is_granted('ROLE_USER') %}
+                        {% if (is_granted('CAN_EDIT', comment)) or (is_granted('CAN_DELETE', comment)) %}
                             <td>{{ include('quack/_delete_comment_form.html.twig') }}</td>
+                            <td><a href="{{ path('quack_edit', {'id': quack.id}) }}" class="btn btn-warning">
+                                    edit
+                                </a></td>
                         {% endif %}
                     {% endif %}
 
@@ -49,15 +62,12 @@
         </table>
     {% endif %}
 
-    <a href="{{ path('quack_comment', {'id': quack.id}) }}">
-        <button class="btn-primary btn">Add some comment</button>
+    <a href="{{ path('quack_comment', {'id': quack.id}) }}" class="btn btn-warning">
+        Add some comment
     </a>
-    <a href="{{ path('quack_index') }}">
-        <button class="btn-primary btn">back to list</button>
-    </a>
-    <a href="{{ path('quack_edit', {'id': quack.id}) }}">
-        <button class="btn-primary btn">edit</button>
+    <a href="{{ path('quack_index') }}" class="btn btn-warning">
+        back to list
     </a>
 
-    {{ include('quack/_delete_form.html.twig') }}
+    <a href="{{ path('duck_index') }}" class="btn btn-warning">Return at home !</a>
 {% endblock %}

@@ -73,9 +73,9 @@ class QuackController extends AbstractController
         $form->handleRequest($request);
 
         $this->denyAccessUnlessGranted(QuackVoter::EDIT, $quack);
-        if (!$this->isGranted(QuackVoter::EDIT, $form)) {
-           // return $this->render('/quack');
-        }
+//        if (!$this->isGranted(QuackVoter::EDIT, $form)) {
+//           // return $this->render('/quack');
+//        }
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 

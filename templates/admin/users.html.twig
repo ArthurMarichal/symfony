@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Duck index{% endblock %}
+
+{% block body %}
+    <h1>Hello {{ app.user.duckname }}</h1>
+    <img src="{{ app.user.picture }}" alt="profil pic" width="250" height="250"><br>
+    <a href="{{ path('duck_show', {'duckname': app.user.duckname}) }}" class="btn btn-warning">
+        Mon Duck !
+    </a>
+
+    <h3>Here is all the Ducks :</h3>
+    <table class="table duck-text">
+        <thead>
+        <tr>
+            <th>Duckname</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Nombre de Quacks</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.duckname }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        {% if role == "ROLE_ADMIN" %}
+                            Admin
+                        {% elseif role == "ROLE_USER" %}
+                            Utilisateur
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ user.quacks|length }}</td>
+                <td><a href="{{ path('edit_user', {'id': user.id}) }}" class="btn btn-warning">Modifier</a></td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
